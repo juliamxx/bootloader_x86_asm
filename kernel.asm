@@ -64,7 +64,7 @@ Menu:
     ;nome do jogo
     mov dh, 3    ;Linha
     mov dl, 34   ;Coluna
-    mov ah, 02h  ;Setando o cursor
+    mov ah, 02h  ;Cursor
     mov bh, 0    ;Pagina 0
     int 10h
     mov si, nomejogo
@@ -179,8 +179,8 @@ exitcreditos:
 
     
     cmp al, 27
-	je Menu
-	jne exitcreditos
+	   je Menu
+	   jne exitcreditos
 
 
 telajogo: 
