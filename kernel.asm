@@ -9,8 +9,8 @@ resposta times 8 db 0
 	
 nomejogo    db 'GENIUS GAME', 0
 jogar       db 'START (PRESS 1)', 0
-creditos    db 'CREDITS (PRESS 2)', 0
-instrucao   db 'INSTRUCTIONS (PRESS 3)', 0
+instrucao   db 'INSTRUCTIONS (PRESS 2)', 0
+creditos    db 'CREDITS (PRESS 3)', 0
 saida       db 'EXIT (PRESS 4)', 0
 
 str_derrotado db 'Voce perdeu!', 0
@@ -28,8 +28,12 @@ nivel3 db 'rYKnly', 0, 0
 nivel4 db 'OuHBnJU', 0
 
 respostaN1 db 'AgT', 0
+respostaN2 db 'WULPF', 0
+respostaN3 db 'rYKnly', 0
+respostaN4 db 'OuHBnJU', 0
 
 bemVindo db 'Bem vindo ao GENIUS GAME', 0
+
 ;CREDITOS
 
 grupo     db 'created by:', 0
@@ -42,6 +46,10 @@ esc   db 'Press Esc to return', 0
 
 score	db 'Your score:', 0
 rounds	db 'Rounds:', 0
+
+;INSTRUCOES
+
+str_instrucao db '', 0
 
 strcmp:              ; mov si, string1, mov di, string2, compara as strings apontadas por si e di
   .loop1:
@@ -316,16 +324,25 @@ Menu:
     call printString
 
     ;string start
-    mov dh, 15   
+    mov dh, 15  
     mov dl, 32 
     mov ah, 02h  
     mov bh, 0      
     int 10h
     mov si, jogar
     call printString
+
+    ;string instrucoes
+    mov dh, 18   
+    mov dl, 29 
+    mov ah, 02h  
+    mov bh, 0      
+    int 10h
+    mov si, instrucao
+    call printString
     
     ;string creditos
-    mov dh, 20   
+    mov dh, 21 
     mov dl, 31 
     mov ah, 02h  
     mov bh, 0      
@@ -334,8 +351,8 @@ Menu:
     call printString
     
     ;string exit 
-    mov dh, 25   
-    mov dl, 32
+    mov dh, 24  
+    mov dl, 33
     mov ah, 02h  
     mov bh, 0       
     int 10h
@@ -352,11 +369,11 @@ opcaomenu:
         
     ;se '2'
     cmp al, 50
-    je telacredito
+    je telainstrucao
 
     ;se '3'
     cmp al,51
-   ; je telainstrucao
+    je telacredito
 
     ;se '4'
     cmp al, 52
@@ -373,7 +390,7 @@ telacredito:
 
     mov ah, 0bh
     mov bh, 0
-    mov bl, 0
+    mov bl, 1h 
     int 10h
     
     
@@ -438,9 +455,26 @@ telainstrucao:
 
     mov ah, 0bh
     mov bh, 0
-    mov bl, 0
+    mov bl, 4
     int 10h
-   
+
+    mov dh, 20   
+    mov dl, 10   
+    mov ah, 02h  
+	mov bh, 0    
+	int 10h
+    mov si, esc
+    call printString
+
+exitinstrucoes:
+	
+    mov ah, 0 ;ler caractere
+    int 16h
+
+    
+    cmp al, 27
+	   je Menu
+	   jne exitinstrucoes   
 
 telajogo: 
     mov ah, 0 ;limpar a tela
